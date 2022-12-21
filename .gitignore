@@ -1,0 +1,9 @@
+.DS_Store
+.vscode 
+*.map
+node_modules
+package-lock.json
+
+# obsidian
+data.json
+main.js

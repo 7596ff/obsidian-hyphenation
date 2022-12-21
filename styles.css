@@ -1,0 +1,11 @@
+.markdown-preview-view p,
+.markdown-preview-view ul,
+.markdown-preview-view ol {
+  text-align: justify;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.markdown-preview-view a[class="external-link"] {
+  word-break: break-all;
+}

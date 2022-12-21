@@ -1,0 +1,10 @@
+{
+    "id": "obsidian-hyphenation",
+    "name": "Hyphenation",
+    "version": "0.0.1",
+    "minAppVersion": "0.15.0",
+    "description": "Enables justified text and hyphenation",
+    "author": "Cassandra McCarthy",
+    "authorUrl": "https://github.com/7596ff",
+    "isDesktopOnly": false
+}
