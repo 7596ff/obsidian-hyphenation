@@ -2,11 +2,16 @@ import { Plugin, TFile } from "obsidian";
 
 export default class Hyphenation extends Plugin {
   clearLang = () => {
-    for (const el of Array.from(
-      document.getElementsByClassName("markdown-preview-view")
-    )) {
+    for (const el of this.elements()) {
       el.removeAttribute("lang");
     }
+  };
+
+  elements = function (): Element[] {
+    const preview = document.getElementsByClassName("markdown-preview-view");
+    const live = document.getElementsByClassName("is-live-preview");
+
+    return Array.from(preview).concat(Array.from(live));
   };
 
   fileOpen = (file: TFile | null) => {
@@ -21,9 +26,7 @@ export default class Hyphenation extends Plugin {
   };
 
   setLang = (lang: string) => {
-    for (const el of Array.from(
-      document.getElementsByClassName("markdown-preview-view")
-    )) {
+    for (const el of this.elements()) {
       el.setAttribute("lang", lang);
     }
   };
