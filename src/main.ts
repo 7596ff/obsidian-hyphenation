@@ -1,48 +1,52 @@
-import { Plugin, TFile } from "obsidian";
+import { Plugin, WorkspaceLeaf } from "obsidian";
 
 export default class Hyphenation extends Plugin {
   clearLang = () => {
-    for (const el of this.elements()) {
+    // clear all lang elements from all active leafs
+    for (const el of this.elements(document.body)) {
       el.removeAttribute("lang");
     }
   };
 
-  elements = function (): Element[] {
-    const preview = document.getElementsByClassName("markdown-preview-view");
-    const live = document.getElementsByClassName("is-live-preview");
+  elements = (containerEl: HTMLElement): Element[] => {
+    const preview = containerEl.getElementsByClassName("markdown-preview-view");
+    const live = containerEl.getElementsByClassName("is-live-preview");
 
     return Array.from(preview).concat(Array.from(live));
   };
 
-  fileOpen = (file: TFile | null) => {
-    if (file) {
-      const cache = this.app.metadataCache.getFileCache(file);
-
-      // use the language from the frontmatter, or the default language
-      const lang = cache?.frontmatter?.["lang"] || navigator.language;
-
-      this.setLang(lang);
+  activeLeafChange = (leaf: WorkspaceLeaf | null) => {
+    if (!leaf) {
+      return;
     }
+
+    // since we are responding to an active leaf change, get the active file
+    // which should be open in the active leaf
+    const activeFile = this.app.workspace.getActiveFile();
+    if (!activeFile || activeFile.extension != "md") {
+      return;
+    }
+
+    const cache = this.app.metadataCache.getFileCache(activeFile);
+
+    // use the language from the frontmatter, or the default language
+    const lang = cache?.frontmatter?.["lang"] || navigator.language;
+
+    this.setLang(leaf.view.containerEl, lang);
   };
 
-  setLang = (lang: string) => {
-    for (const el of this.elements()) {
+  setLang = (containerEl: HTMLElement, lang: string) => {
+    for (const el of this.elements(containerEl)) {
       el.setAttribute("lang", lang);
     }
   };
 
   async onload() {
-    if (this.app.workspace.layoutReady) {
-      this.setLang(navigator.language);
-    } else {
+    this.app.workspace.onLayoutReady(() => {
       this.registerEvent(
-        this.app.workspace.on("file-open", () =>
-          this.setLang(navigator.language)
-        )
+        this.app.workspace.on("active-leaf-change", this.activeLeafChange)
       );
-    }
-
-    this.registerEvent(this.app.workspace.on("file-open", this.fileOpen));
+    });
   }
 
   onunload() {
