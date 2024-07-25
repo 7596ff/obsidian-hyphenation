@@ -9,10 +9,10 @@ export default class Hyphenation extends Plugin {
   };
 
   elements = (containerEl: HTMLElement): Element[] => {
-    const preview = containerEl.getElementsByClassName("markdown-preview-view");
-    const live = containerEl.getElementsByClassName("is-live-preview");
+    const source = containerEl.getElementsByClassName("markdown-source-view");
+    const reading = containerEl.getElementsByClassName("markdown-reading-view");
 
-    return Array.from(preview).concat(Array.from(live));
+    return Array.from(source).concat(Array.from(reading));
   };
 
   activeLeafChange = (leaf: WorkspaceLeaf | null) => {
