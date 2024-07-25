@@ -1,6 +1,6 @@
 {
     "name": "obsidian-hyphenation",
-    "version": "0.0.4",
+    "version": "0.1.0",
     "description": "Enables justified text and hyphenation",
     "main": "main.js",
     "scripts": {
