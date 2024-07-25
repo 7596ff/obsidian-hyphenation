@@ -1,7 +1,6 @@
 .markdown-preview-view p,
 .markdown-preview-view ul,
-.markdown-preview-view ol,
-.markdown-source-view.is-live-preview {
+.markdown-preview-view ol {
   text-align: justify;
   overflow-wrap: break-word;
   hyphens: auto;
